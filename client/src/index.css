@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'logo';
+    src: url("./assets/MarshalTheDead-ywjxM.ttf");
+}
+@font-face {
+    font-family: 'logo2';
+    src: url("./assets/CloisterBlack.ttf");
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

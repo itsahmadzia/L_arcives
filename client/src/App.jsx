@@ -7,12 +7,14 @@ import Dashboard from "./components/Dashboard";
 import Projects from "./components/Projects";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import Header from "./components/sub_components/Header"
+
 export default function App() {
   return (
    
      <BrowserRouter>
-  
-  
+
+<Header></Header>
       <Routes>
       <Route path="/" element={<Home/>} />
         <Route path="/about" element={<About />}/>
