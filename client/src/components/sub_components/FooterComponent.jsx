@@ -120,7 +120,8 @@ export default function FooterComponent() {
                   >About</a>
                 </p>
                 <p className="mb-4">
-                  <a className="text-neutral-600 dark:text-neutral-200"
+                  <a className="text-neutral-600 dark:text-neutral-200" href='https://en.wikipedia.org/wiki/Death_Note'
+                  target='_blank'
                   >Story Line</a>
                 </p>
                 <p className="mb-4">
