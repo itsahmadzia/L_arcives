@@ -8,10 +8,11 @@ import Projects from "./components/Projects";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Header from "./components/sub_components/Header"
+import FooterComponent from "./components/sub_components/FooterComponent";
 
 export default function App() {
   return (
-   
+   <>
      <BrowserRouter>
 
 <Header></Header>
@@ -25,6 +26,6 @@ export default function App() {
      
       </Routes>
     </BrowserRouter>
-
+<FooterComponent></FooterComponent></>
   );
 }
