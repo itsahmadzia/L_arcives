@@ -33,7 +33,7 @@ export default function Header() {
       <div className="flex gap-7 md:order-2">
         <Button
           className="w-12 h-11 sm:inline hidden bg-white focus:ring-1"
-          color="black"
+          color="black" gradientDuoTone="tealToLime" 
           pill
         >
           <FaMoon></FaMoon>
@@ -43,7 +43,7 @@ export default function Header() {
           <Button
             className="  flex bg-center focus:ring-0 color-black"
             pill
-            gradientDuoTone="purpleToBlue"
+            gradientDuoTone="tealToLime"
             outline
           >
             Sign in
