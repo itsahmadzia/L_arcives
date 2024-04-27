@@ -13,7 +13,7 @@ export default function SignUp() {
     console.log("nciscn");
 
     e.preventDefault();
-    if (!formData.email || !formData.password || !formData.email) {
+    if (!formData.email || !formData.password || !formData.username) {
       seterror((e) => "Please Fill all the values ");
       return;
     }
@@ -116,7 +116,7 @@ export default function SignUp() {
               {loading ? (
                 <>
                   <Spinner size="sm"></Spinner>
-                  <span>  Loading</span>
+                 
                 </>
               ) : (
                 <span> Sign Up</span>

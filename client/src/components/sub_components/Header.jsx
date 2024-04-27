@@ -39,7 +39,7 @@ export default function Header() {
           <FaMoon></FaMoon>
         </Button>
  
-        <Link to="/sing-in">
+        <Link to="/sign-in">
           <Button
             className="  flex bg-center focus:ring-0 color-black"
             pill
