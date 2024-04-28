@@ -6,7 +6,7 @@ import About from "./components/About";
 import Dashboard from "./components/Dashboard";
 import Projects from "./components/Projects";
 import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
+import SignUp from "./components/SignUp.jsx";
 import Header from "./components/sub_components/Header"
 import FooterComponent from "./components/sub_components/FooterComponent";
 

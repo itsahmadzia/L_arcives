@@ -13,6 +13,10 @@ const userSchema= new mongoose.Schema({
     password : {
         required:true,
         type:String,
+    }, 
+    photo : {
+        type:String , 
+        default: "https://wallpapers-clan.com/wp-content/uploads/2022/07/anime-default-pfp-35.jpg"
     }
 },{timestamps:true}
 );
