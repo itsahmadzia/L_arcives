@@ -7,6 +7,11 @@ import { FaMoon } from "react-icons/fa";
 import {useLocation} from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { toggle } from "../../redux/theme/themeSlice";
+import {
+
+  deleteUserSuccess,
+} from "../../redux/user/userSlice";
+
 export default function Header() {
   const dispatch = useDispatch();
 const changeTheme = ()=>{
@@ -15,7 +20,20 @@ const changeTheme = ()=>{
 }
   const {currentUser}= useSelector(state => state.user);
     const path = useLocation().pathname;
-
+    const logout= async()=> {
+      const res = await fetch("/api/user/signout", 
+      
+      {
+        method:'POST'
+      })
+      const d= await res.json();
+      if(!res.ok){  
+        console.log(d.message);
+      }
+      else {
+        dispatch(deleteUserSuccess())//clear redux
+      }
+    }
   return (
     <Navbar className="border-b-2 " 
     >
@@ -53,7 +71,7 @@ const changeTheme = ()=>{
  
 
  { currentUser ? (
-<Dropdown arrowIcon={false} className="bg-lime-200 "
+<Dropdown arrowIcon={false} className="bg-lime-200 w-40"
 inline
 label={
   
@@ -67,7 +85,7 @@ label={
 >
 
   <Dropdown.Header  >
-    <span className="block text-md  truncate font-mainButtons font-bold tracking-wide text-black dark:text-neutral-50">{currentUser.username}</span>
+    <span className="block text-md  truncate font-mainButtons font-bold tracking-wide text-black dark:text-neutral-50 text-center text-2xl">{currentUser.username}</span>
 
   </Dropdown.Header>
 <Link to="/dashboard">
@@ -80,7 +98,7 @@ label={
 <Dropdown.Divider/>
 
 
-<Dropdown.Header className="font-main font-bold hover:bg-green-300 text-center cursor-pointer hover:dark:text-zinc-950">
+<Dropdown.Header className="font-main font-bold hover:bg-green-300 text-center cursor-pointer hover:dark:text-zinc-950" onClick={logout}>
  <span >Sign out</span>
 </Dropdown.Header>
 </Dropdown>

@@ -1,7 +1,7 @@
 import { app } from "../../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { Alert, Button, TextInput } from "flowbite-react";
+import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -10,29 +10,67 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-
+import {
+  updateFailure,
+  updateStart,
+  updateSuccess,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+} from "../../redux/user/userSlice";
+import { useDispatch } from "react-redux";
 function greeting() {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
 
   if (currentHour >= 5 && currentHour < 12) {
-    return "Good morning";
+    return "Good Morning";
   } else if (currentHour >= 12 && currentHour < 18) {
-    return "Good afternoon";
+    return "Good Afternoon";
   } else if (currentHour >= 18 && currentHour < 20) {
-    return "Good evening";
+    return "Good Evening";
   } else {
-    return "Good night";
+    return "Good Night";
   }
 }
 
 export default function ProfileComponent() {
+  const handleDeleteButton = async () => {
+    setshowpopup(false);
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id} `, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(deleteUserFailure(data.message));
+      } else {
+        dispatch(deleteUserSuccess());
+      }
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+  const dispatch = useDispatch();
+  const [showpopup, setshowpopup] = useState(false);
+
+  const [imageUploading, setimageUploading] = useState(false);
+
+  const [successmessage, setsuccessmessage] = useState(false);
+
+  const [errormessage, seterrormessage] = useState(null);
+
   const { currentUser } = useSelector((state) => state.user);
   const [imgprog, setimgprog] = useState(null);
   const [imgerr, setimgerr] = useState(null);
   const [imgf, setimgf] = useState(null);
   const [imgurl, setimgurl] = useState(null);
+  const [formData, setformData] = useState({});
 
+  const randomRGB = (e) => {
+    console.log(e);
+  };
   const fileRef = useRef();
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -41,13 +79,53 @@ export default function ProfileComponent() {
       setimgurl(URL.createObjectURL(file));
     }
   };
+
   useEffect(() => {
     if (imgf) {
       uploadImage();
     }
   }, [imgf]);
 
+  const populateform = (e) => {
+    setformData({ ...formData, [e.target.id]: e.target.value });
+  };
+  const submit = async (e) => {
+    setsuccessmessage(false);
+    seterrormessage(null);
+    e.preventDefault();
+    if (Object.keys(formData).length === 0) {
+      seterrormessage("Please enter some values in the fields ");
+      return;
+    }
+    if (imageUploading) {
+      seterrormessage("Please wait for the image to upload");
+      return;
+    }
+    try {
+      dispatch(updateStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(updateFailure(data.message));
+      } else {
+        dispatch(updateSuccess(data));
+        setsuccessmessage(true);
+      }
+    } catch (error) {
+      seterrormessage(error.message);
+      dispatch(updateFailure(error));
+    }
+  };
+ // console.log(formData);
   const uploadImage = async () => {
+    setimageUploading(true);
     setimgerr(null);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + imgf.name;
@@ -66,28 +144,53 @@ export default function ProfileComponent() {
         setimgprog(null);
         setimgf(null);
         setimgurl(null);
+        setimageUploading(false);
+        seterrormessage("Error uploading image ");
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setimgurl(downloadURL);
+          setformData({ ...formData, photo: downloadURL });
+          setimageUploading(false);
         });
       }
     );
   };
+
+  const signoutaction = async()=> {
+const res = await fetch("/api/user/signout", 
+
+{
+  method:'POST'
+})
+const d= await res.json();
+if(!res.ok){  
+  console.log(d.message);
+}
+else {
+  dispatch(deleteUserSuccess())//clear redux
+}
+
+  }
   return (
-    <div className="max-w-lg mx-auto p-3 w-full ">
-      <p className="my-3 text-center font-semibold text-2xl text-[rgb(144,238,144)]">
-        <span className="font-logo2 sm:text-2xl md:text-8xl text-black  ">
+    <div className="max-w-lg mx-auto p-3 w-full mt-5  ">
+      <p
+        onClick={randomRGB}
+        className="my-3 text-center font-semibold text-2xl text-[rgb(144,238,144)]"
+      >
+        <span
+          className="font-logo sm:text-2xl md:text-5xl   hover:tracking-[8px] hover:text-gap
+        cursor-pointer hover:scale-125  duration-500  hover:bg-[black] p-5 rounded-md"
+        >
           {greeting() + ""}
         </span>{" "}
         {"   "}
       </p>
-      <p className="text-center mb-10 my-6 text-white cursor-pointer hover:scale-110 transition-all ">
+      <p className="text-center mb-10 my-9 cursor-pointer hover:scale-110 transition-all hover:font-bol duration-300">
         {currentUser.username}
       </p>
-      
-    
-      <form className="flex flex-col gap-4">
+
+      <form className="flex flex-col gap-4" onSubmit={submit}>
         <input
           type="file"
           accept="image/*"
@@ -106,13 +209,12 @@ export default function ProfileComponent() {
               strokeWidth={6}
               textColor="rgb(144, 238,144)"
               styles={{
-                root: { 
+                root: {
                   top: 0,
                   left: 0,
                   width: "100%",
                   height: "100%",
                   position: "absolute",
-                 
                 },
                 path: {
                   stroke: `rgba(144, 238, 144, ${imgprog / 100})`,
@@ -136,6 +238,7 @@ export default function ProfileComponent() {
         </div>
         {imgerr && <Alert color="failure">{imgerr}</Alert>}
         <TextInput
+          onChange={populateform}
           type="text"
           id="username"
           placeholder="Enter your username to update"
@@ -144,6 +247,7 @@ export default function ProfileComponent() {
           minLength={6}
         />
         <TextInput
+          onChange={populateform}
           type="email"
           id="email"
           placeholder="Enter your email to update"
@@ -151,19 +255,71 @@ export default function ProfileComponent() {
           required
         />
 
-        <TextInput type="password" id="password" placeholder="Enter your password to update" defaultValue={currentUser.password} minLength={8}/>
+        <TextInput
+          onChange={populateform}
+          type="password"
+          id="password"
+          placeholder="Enter your password to update"
+          minLength={8}
+        />
         <Button type="submit" gradientDuoTone="tealToLime">
           Update
         </Button>
       </form>
       <div className="text-red-500 flex justify-between mt-5">
-        <span className="cursor-pointer hover:bg-black rounded-md p-2 transition-all duration-30">
+        <span
+          onClick={() => {
+            setshowpopup(true);
+          }}
+          className="cursor-pointer hover:bg-[#000000] rounded-md p-2 transition-all duration-300"
+        >
           Delete Account
         </span>
-        <span className="cursor-pointer hover:bg-black rounded-md p-2 transition-all duration-300">
+        <span onClick={signoutaction} className="cursor-pointer hover:bg-[#000000] rounded-md p-2 transition-all duration-300">
           Sign Out
         </span>
       </div>
+      {successmessage && (
+        <Alert color={"success"}>User updated successfully</Alert>
+      )}
+      {errormessage && <Alert color={"failure"}>{errormessage}</Alert>}
+
+      <Modal
+        show={showpopup}
+        onClose={() => {
+          setshowpopup(false);
+        }}
+        popup
+        size="md"
+      >
+        <Modal.Header></Modal.Header>
+        <Modal.Body>
+          <div className="rounded-full w-24 h-24 text-center mx-auto mb-10">
+            <img
+              className="rounded-full"
+              src="https://i.pinimg.com/736x/16/7f/2d/167f2db72c331c663aa805a99e2f4df0.jpg"
+            ></img>
+          </div>
+          <h2 className="text-center mb-5 text-lg text-gray-500 dark:text-white">
+            Are You sure you want to delete your account??
+          </h2>
+
+          <div className="flex justify-center gap-5">
+            <Button color="failure" onClick={handleDeleteButton}>
+              Yes I am gay
+            </Button>
+
+            <Button
+              color="red"
+              onClick={() => {
+                setshowpopup(false);
+              }}
+            >
+              No cancel
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

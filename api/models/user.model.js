@@ -17,7 +17,12 @@ const userSchema= new mongoose.Schema({
     photo : {
         type:String , 
         default: "https://wallpapers-clan.com/wp-content/uploads/2022/07/anime-default-pfp-35.jpg"
+    },
+    isAdmin : {
+        type : Boolean,
+        default:false,
     }
+    
 },{timestamps:true}
 );
   const User = mongoose.model('User',userSchema);
