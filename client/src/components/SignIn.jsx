@@ -110,7 +110,7 @@ export default function SignIn() {
             to="/"
             className="self-center whitespace-nowrap   font-semibold dark:text-white rounded-lg "
           >
-            <span className="px-2 py-1   text-black font-extrabold font-logo2 text-8xl cursor-pointer  ">
+            <span className="px-2 py-1  font-extrabold font-logo2 text-8xl cursor-pointer  ">
               L
             </span>
             <span className="text-2xl">archives</span>

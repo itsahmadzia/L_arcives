@@ -1,18 +1,29 @@
 import React from "react";
-import { Button, Navbar, TextInput } from "flowbite-react";
+import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { Link } from "react-router-dom";
+import {useSelector} from "react-redux"
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
 import {useLocation} from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { toggle } from "../../redux/theme/themeSlice";
 export default function Header() {
+  const dispatch = useDispatch();
+const changeTheme = ()=>{
+  dispatch(toggle())
+  console.log("here")
+}
+  const {currentUser}= useSelector(state => state.user);
     const path = useLocation().pathname;
+
   return (
-    <Navbar className="border-b-2 bg-slate-50">
+    <Navbar className="border-b-2 " 
+    >
       <Link
         to="/"
         className="self-center whitespace-nowrap  sm:text-xl font-semibold dark:text-white rounded-lg"
       >
-        <span className="px-2 py-1   text-black font-extrabold font-logo2 text-5xl">
+        <span className="px-2 py-1   text-black font-extrabold font-logo2 text-5xl dark:text-white">
           L
         </span>
         <span className="text-sm">archives</span>
@@ -26,20 +37,55 @@ export default function Header() {
           className="hidden lg:inline"
         ></TextInput>
       </form>
-      <Button className="lg:hidden w-12 h-9 bg-white" pill color="grey">
-        <AiOutlineSearch></AiOutlineSearch>
+      <Button className="lg:hidden w-12 h-9" pill color="grey">
+        <AiOutlineSearch ></AiOutlineSearch>
       </Button>
   
       <div className="flex gap-7 md:order-2">
-        <Button
+        <Button onClick={changeTheme}
           className="w-12 h-11 sm:inline hidden bg-white focus:ring-1"
           color="black" gradientDuoTone="tealToLime" 
           pill
         >
-          <FaMoon></FaMoon>
+          
+          <FaMoon ></FaMoon>
         </Button>
  
-        <Link to="/sign-in">
+
+ { currentUser ? (
+<Dropdown arrowIcon={false} className="bg-lime-200 "
+inline
+label={
+  
+  <Avatar
+  img={currentUser.photo}
+  rounded
+  >
+
+  </Avatar>
+}
+>
+
+  <Dropdown.Header  >
+    <span className="block text-md  truncate font-mainButtons font-bold tracking-wide text-black dark:text-neutral-50">{currentUser.username}</span>
+
+  </Dropdown.Header>
+<Link to="/dashboard">
+  <Dropdown.Header className="hover:bg-green-300 text-center font-main font-bold  transition-all text-stone-950 hover:dark:text-zinc-950">
+    
+      <span >Profile</span>
+  
+  </Dropdown.Header>
+  </Link>
+<Dropdown.Divider/>
+
+
+<Dropdown.Header className="font-main font-bold hover:bg-green-300 text-center cursor-pointer hover:dark:text-zinc-950">
+ <span >Sign out</span>
+</Dropdown.Header>
+</Dropdown>
+
+ ) : (<Link to="/sign-in">
           <Button
             className="  flex bg-center focus:ring-0 color-black"
             pill
@@ -48,7 +94,8 @@ export default function Header() {
           >
             Sign in
           </Button>
-        </Link>
+        </Link>)
+        }
 <Navbar.Toggle></Navbar.Toggle>
       </div>
       <Navbar.Collapse>

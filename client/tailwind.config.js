@@ -11,7 +11,9 @@ export default {
     extend: {},
     fontFamily:{
 logo:["logo"],
-logo2:["logo2"]
+logo2:["logo2"],
+main:["Lato"],
+mainButtons:["Comfortaa"]
     },
   },
   plugins: [

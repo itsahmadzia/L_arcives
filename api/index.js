@@ -3,11 +3,13 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRouter from "./routes/user.route.js";
 import {authRouter} from "./routes/auth.route.js";
+import cookieParser from "cookie-parser";
 dotenv.config();
+
 
 const app = express();
 
-
+app.use(cookieParser());
 let m= await mongoose.connect(process.env.DBURL)
 .then(()=>{
     console.log("DB CONNECTED SUXXEXXFULLY")
