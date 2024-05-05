@@ -18,5 +18,6 @@ mainButtons:["Comfortaa"]
   },
   plugins: [
     flowbite.plugin(),
+    require("tailwind-scrollbar")
   ],
 }
