@@ -5,6 +5,7 @@ import {
 
   deleteUserSuccess,
 } from "../../redux/user/userSlice";
+
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 //import { useSelector } from "react-redux";
@@ -14,6 +15,7 @@ export default function SideComponent() {
 const dispatch = useDispatch();
     const location = useLocation();
   const [tab,setTab]=useState("");
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(
     () =>{
@@ -45,7 +47,7 @@ const dispatch = useDispatch();
         <Sidebar.ItemGroup className="text-justify">
     <Link to = "/dashboard?tab=profile">
    
-          <Sidebar.Item active={tab === "profile"} icon={HiUserCircle} label = {"user"} labelColor = {"dark"} as='div'>
+          <Sidebar.Item active={tab === "profile"} icon={HiUserCircle} label = {currentUser.isAdmin ? "admin" : "user"} labelColor = {"dark"} as='div'>
             Profile
           </Sidebar.Item>
           </Link>

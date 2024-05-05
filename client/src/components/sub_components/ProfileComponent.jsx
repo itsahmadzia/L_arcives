@@ -19,6 +19,7 @@ import {
   deleteUserSuccess,
 } from "../../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
 function greeting() {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
@@ -61,7 +62,7 @@ export default function ProfileComponent() {
 
   const [errormessage, seterrormessage] = useState(null);
 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser ,loading } = useSelector((state) => state.user);
   const [imgprog, setimgprog] = useState(null);
   const [imgerr, setimgerr] = useState(null);
   const [imgf, setimgf] = useState(null);
@@ -123,7 +124,7 @@ export default function ProfileComponent() {
       dispatch(updateFailure(error));
     }
   };
- // console.log(formData);
+  
   const uploadImage = async () => {
     setimageUploading(true);
     setimgerr(null);
@@ -179,8 +180,8 @@ else {
         className="my-3 text-center font-semibold text-2xl text-[rgb(144,238,144)]"
       >
         <span
-          className="font-logo sm:text-2xl md:text-5xl   hover:tracking-[8px] hover:text-gap
-        cursor-pointer hover:scale-125  duration-500  hover:bg-[black] p-5 rounded-md"
+          className="hover:tracking-[8px] hover:text-gap
+        cursor-pointer hover:scale-125  duration-500  sm:hover:bg-[rgb(0,0,0)] p-5 rounded-md font-logo sm:text-2xl md:text-4xl    "
         >
           {greeting() + ""}
         </span>{" "}
@@ -262,9 +263,16 @@ else {
           placeholder="Enter your password to update"
           minLength={8}
         />
-        <Button type="submit" gradientDuoTone="tealToLime">
+        <Button disabled= {loading} type="submit" gradientDuoTone="tealToLime">
           Update
         </Button>
+<Link to={"/create-post"} className="hover:scale-110 transition-all hover:font-bold duration-300 w-fit self-center mt-5">
+     {currentUser.isAdmin && ( <Button  className="hover:scale-110 transition-all hover:font-bold duration-300 w-fit self-center " type="button"  gradientDuoTone="tealToLime" outline
+        >
+          + Create Post
+        </Button>)}
+</Link>
+    
       </form>
       <div className="text-red-500 flex justify-between mt-5">
         <span
