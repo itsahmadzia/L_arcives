@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import SideComponent from './sub_components/SideComponent';
 import ProfileComponent from './sub_components/ProfileComponent';
-
+import DashPosts from './sub_components/DashPosts';
 export default function Dashboard() {
   const location = useLocation();
   const [tab,setTab]=useState("");
@@ -22,9 +22,15 @@ export default function Dashboard() {
       <SideComponent></SideComponent>
      </div>
 
-     <div className='w-full'>
+    
     { (tab==="profile") && <ProfileComponent></ProfileComponent>}
-      </div>
+    
+{
+  (tab==="posts" && <DashPosts></DashPosts>)
+}
+
+
+
     </div>
   )
 }
