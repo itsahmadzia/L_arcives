@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "flowbite-react";
+import { Button, Table,Modal } from "flowbite-react";
 import { useSelector } from "react-redux";
 import {Link} from 'react-router-dom'
 
@@ -8,8 +8,33 @@ export default function DashPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showmore,setshowmore]= useState(true);
+  const [showmodal,setshowmodal]  = useState(false);
+  const [posttoDelete,setposttoDelete] = useState("");
 
+const handleDeleteButton =  async()=>{
+  
+  {
+  try{
 
+   await fetch("/api/admin/deletePost/"+posttoDelete+"/"+currentUser._id,{
+      method:"DELETE",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    }).then((res)=>{
+      if(res.ok){
+
+        window.location.reload();
+      }
+      else {console.log(res)}
+    })
+  }
+  catch(error){
+    console.log(e)
+  }
+
+  }
+}
   const handleshowmore = async() => {
     const s= posts.length;
     console.log(s)
@@ -90,7 +115,10 @@ export default function DashPosts() {
                 </Table.Cell>
                 <Table.Cell>{post.category}</Table.Cell>
                 {/* Add delete and update cells */}
-                <Table.Cell><span className="text-red-500 hover:text-red-600 cursor-pointer" >Delete</span></Table.Cell>
+                <Table.Cell><span onClick={async()=> {
+                  setposttoDelete(post._id);
+                  setshowmodal(true);
+                }} className="text-red-500 hover:text-red-600 cursor-pointer" >Delete</span></Table.Cell>
 
 
                 <Table.Cell>
@@ -118,6 +146,43 @@ export default function DashPosts() {
       : (
         <p>No Posts Found</p>
       )}
+         <Modal
+        show={showmodal}
+        onClose={() => {
+          setshowmodal(false);
+        }}
+        popup
+        size="md"
+      >
+        <Modal.Header></Modal.Header>
+        <Modal.Body>
+          <div className="rounded-full w-24 h-24 text-center mx-auto mb-10">
+            <img
+              className="rounded-full"
+              src="https://i.pinimg.com/736x/16/7f/2d/167f2db72c331c663aa805a99e2f4df0.jpg"
+            ></img>
+          </div>
+          <h2 className="text-center mb-5 text-lg text-gray-500 dark:text-white">
+            Are You sure you want to delete your post??
+          </h2>
+
+          <div className="flex justify-center gap-5">
+            <Button color="failure" onClick={handleDeleteButton}>
+              Yes
+            </Button>
+
+            <Button
+              color="red"
+              onClick={() => {
+               setshowmodal(false);
+              }}
+            >
+              No cancel
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
     </div>
   );
 }

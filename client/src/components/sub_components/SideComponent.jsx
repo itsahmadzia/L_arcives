@@ -76,6 +76,7 @@ export default function SideComponent() {
             className="cursor-pointer"
             onClick={logout}
             icon={HiArrowLeft}
+            as="div"
           >
             Sign Out
           </Sidebar.Item>
