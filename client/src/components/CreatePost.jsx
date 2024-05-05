@@ -12,7 +12,7 @@ export default function CreatePost() {
       <h1 className='text-center text-2xl font-bold mb-3 '>Create Post</h1>
 
       <form className='flex flex-col gap-6'>
-           <div className='flex flex-col gap-2 sm:flex-row justify-between'>
+           <div className='flex flex-col gap-4 sm:flex-row justify-between'>
             <TextInput type='text' placeholder='Title' className='flex-1' required>
 
             </TextInput>
@@ -27,11 +27,12 @@ export default function CreatePost() {
 
            </div>
 
-           <div className='flex  gap-4 justify-between border-2 border-dashed p-10 border-gray-800 hover:border-gray-200 '>
+           <div className='flex flex-col sm:flex-row gap-4 justify-between border-2 border-gray-300 hover:border-gray-800 dark:border-gray-800 dark:hover:border-gray-200 border-dashed dark:text-white p-8 mb-6'
+>
 <FileInput type="file" accept='image/*'/>
 
 
-    <Button color={'green'} size={'sm'} className='py-1' outline>Upload</Button>
+    <Button color={'green'} size={'sm'}  outline className='bg-[#008356] py-1'>Upload</Button>
 
 
 
@@ -39,7 +40,7 @@ export default function CreatePost() {
 
            </div>
 
-     <ReactQuill  theme='snow' placeholder='Your content....' className='p-3 border-2  border-gray-800 hover:border-gray-200 border-dashed dark:text-white   '
+     <ReactQuill  theme='snow' placeholder='Your content....' className='p-4 border-2 border-gray-300 hover:border-gray-800  dark:border-gray-800 dark:hover:border-gray-200 border-dashed dark:text-white  dark:font-normal'
      ></ReactQuill>
 
       <Button type='submit' color={'green'} className='py-2'>Create Post</Button>
