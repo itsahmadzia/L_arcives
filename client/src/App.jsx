@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from "./components/Home";
+import AdminPrivateRoute from "./components/sub_components/adminPrivateRoute.jsx";
 import About from "./components/About";
 import Dashboard from "./components/Dashboard";
 import Projects from "./components/Projects";
@@ -10,6 +11,7 @@ import SignUp from "./components/SignUp.jsx";
 import Header from "./components/sub_components/Header.jsx"
 import FooterComponent from "./components/sub_components/FooterComponent";
 import PrivateRoute from "./components/sub_components/PrivateRoute.jsx";
+import CreatePost from "./components/CreatePost.jsx";
 
 export default function App() {
   return (
@@ -27,6 +29,10 @@ export default function App() {
         <Route path="/projects" element={<Projects />}/>
         <Route path="/sign-in" element={<SignIn />}/>
         <Route path="/sign-up" element={<SignUp />}/>
+
+        <Route element={<AdminPrivateRoute/>} >
+      <Route path="/create-post" element={<CreatePost />}/>;
+        </Route>
      
       </Routes>
     </BrowserRouter>
