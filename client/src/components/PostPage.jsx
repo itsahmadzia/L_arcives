@@ -6,38 +6,70 @@ import CommentSection from "./sub_components/CommentSection.jsx";
 
 
 export default function PostPage() {
+    const [author, setAuthor]=useState({});
     const { slug } = useParams();
     const [error, setError] = useState();
     const [loading, setLoading] = useState();
     const [post, setPost] = useState({});
 
-    useEffect(() => {
-        console.log(slug);
-        const fetchPost = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-                const res = await fetch("/api/admin/getPosts?slug=" + slug);
-                const data = await res.json();
-                if (!res.ok) {
-                    setError(data.message);
-                    setLoading(false);
-                    throw new Error(data.message);
-                } else {
-                    console.log(data);
-                    setPost(data.posts[0]);
-                    console.log(data.posts[0]);
-                    setLoading(false);
-                    setError(null);
-                }
-            } catch (error) {
+
+
+
+const fetchUser = async () => {
+    try {
+        const res = await fetch("/api/user/getUserbyId", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId: post.userId }), 
+        });
+        const data = await res.json(); 
+        if (res.ok) {
+            setAuthor(data.user); 
+        } else { 
+            setAuthor("Author not found"); 
+        }
+    } catch (error) {
+        console.error("Error fetching user:", error);
+    }
+}
+
+
+useEffect(() => {
+    console.log(slug);
+ 
+    const fetchPost = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const res = await fetch("/api/admin/getPosts?slug=" + slug);
+            const data = await res.json();
+            if (!res.ok) {
+                setError(data.message);
                 setLoading(false);
-                setError(error);
-                console.log(error);
+                throw new Error(data.message);
+            } else {
+                console.log(data);
+                setPost(data.posts[0]);
+                console.log(data.posts[0]);
+                setLoading(false);
+                setError(null);
             }
-        };
-        fetchPost();
-    }, [slug]);
+        } catch (error) {
+            setLoading(false);
+            setError(error);
+            console.log(error);
+        }
+    };
+    fetchPost();
+
+}, [slug]);
+
+useEffect(() => {
+    if (post.userId) {
+        fetchUser();
+    }
+}, [post]);
+
 
     if (loading) return <Loading></Loading>;
     else
@@ -65,7 +97,8 @@ export default function PostPage() {
                     <span className="italic">
                         {new Date(post.createdAt).toLocaleDateString()}
                     </span>
-                    <span>{(post.content?.length / 1000).toFixed(0) + " mins read"}</span>
+                    <span className="italic">Written by {author.username}</span>
+                    <span>{post.content ? ((post.content.length / 1000).toFixed(0) + " mins read") : "Loading..."}</span>
                 </div>
 
                 <div className="max-w-4xl w-full p-1 mx-auto mt-10  postCon " dangerouslySetInnerHTML={{ __html: post.content }}></div>
@@ -73,7 +106,7 @@ export default function PostPage() {
 
 
             {error && <Alert color={"failure"}>
-                {error}
+                {error.message}
                 </Alert>}
 
 
