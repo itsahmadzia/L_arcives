@@ -7,6 +7,7 @@ import {
   HiEmojiSad,
   HiUser,
   HiUserCircle,
+  HiUserGroup,
 } from "react-icons/hi";
 import { deleteUserSuccess } from "../../redux/user/userSlice";
 
@@ -71,7 +72,16 @@ export default function SideComponent() {
               </Sidebar.Item>
             </Link>
           )}
-
+<Link to={"/dashboard?tab=users"}>
+<Sidebar.Item
+            className="cursor-pointer"
+         
+            icon={HiUserGroup}
+            as="div"
+          >
+         Users
+          </Sidebar.Item>
+</Link>
           <Sidebar.Item
             className="cursor-pointer"
             onClick={logout}
