@@ -3,7 +3,38 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 
-export default function CommentSection(props) {
+export default function CommentSection({postId}) {
+    const handleSubmit = async(e)=>{
+
+
+e.preventDefault()
+
+try {
+    const res = await fetch("/api/comment/addaComment",
+      {  method:"POST"
+        ,headers: {
+            'Content-Type': 'application/json',
+                
+        },
+        body: JSON.stringify({
+            content:words,
+            postId,
+            userId:currentUser._id
+        })
+    }
+    )
+    const data = await res.json();
+
+    if(res.ok){
+        setWords("");
+    }
+    console.log(data);
+} catch (error) {
+    console.log(error);
+    
+}
+        console.log("yay")
+    }
     const [words,setWords] =useState("");
     const {currentUser} = useSelector(state=> state.user)
 
@@ -30,8 +61,9 @@ return (
         }
 
         {currentUser &&
-            <form className='p-5 m-5 border-2 dark:border-gray-500 border-dashed dark:hover:border-gray-200 rounded-lg border-gray-400 hover:border-gray-600 '>
+            <form onSubmit={handleSubmit} className='p-5 m-5 border-2 dark:border-gray-500 border-dashed dark:hover:border-gray-200 rounded-lg border-gray-400 hover:border-gray-600 '>
                 <Textarea
+                value={words}
                     placeholder='Write a comment...'
                     rows={"4"}
                     maxLength={200}
@@ -44,7 +76,7 @@ return (
                 </Textarea>
                 <div className='flex  justify-between items-center mt-5'>
                     <p className='text-xs'    style={{ color: words.length === 200 ? 'red' : 'inherit' }}>{words.length} / 200</p>
-                    <Button size={"sm"} className='bg-blue-500 hover:bg-blue-600 text-white  rounded-lg ' outline>Comment</Button>
+                    <Button type='submut' size={"sm"} className='bg-blue-500 hover:bg-blue-600 text-white  rounded-lg ' outline>Comment</Button>
                 </div>
             </form>
         }
