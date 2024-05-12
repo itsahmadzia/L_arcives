@@ -77,8 +77,8 @@ export default function PostPage() {
                 </Alert>}
 
 
-<div p-4 flex flex-col max-w-6xl mx-auto min-h-screen mt-16>
-              <CommentSection></CommentSection>  
+<div className= "mt-16">
+              <CommentSection postId={post._id}></CommentSection>  
 </div>
     
 
