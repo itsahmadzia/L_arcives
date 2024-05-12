@@ -145,4 +145,5 @@ const updatePost = async( req , res, next)=> {
   }
 }
 
+
 export { create, getPosts, deletePost, updatePost };
