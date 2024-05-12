@@ -12,6 +12,8 @@ import Header from "./components/sub_components/Header.jsx"
 import FooterComponent from "./components/sub_components/FooterComponent";
 import PrivateRoute from "./components/sub_components/PrivateRoute.jsx";
 import CreatePost from "./components/CreatePost.jsx";
+import UpdatePost from "./components/UpdatePost.jsx";
+import PostPage from "./components/PostPage.jsx";
 
 export default function App() {
   return (
@@ -32,8 +34,10 @@ export default function App() {
 
         <Route element={<AdminPrivateRoute/>} >
       <Route path="/create-post" element={<CreatePost />}/>;
+      <Route path="/update-post/:postId" element={<UpdatePost></UpdatePost>}></Route>
         </Route>
-     
+
+      <Route path="/post/:slug" element={<PostPage></PostPage>}></Route>
       </Routes>
     </BrowserRouter>
 <FooterComponent></FooterComponent></>

@@ -1,5 +1,6 @@
 import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
+import { errorHandle } from "../utils/errorHandle.js";
 const test = (req, res) => {
   res.json({ message: "calling from controller" });
 };
@@ -36,12 +37,16 @@ const updatetheUser = async (req, res) => {
   };
 
   const deleteUser = async(req,res,next) =>{
-    if (!req.user || req.user.id !== req.params.user) {
+    if (!req.user.isAdmin &&(!req.user || req.user.id !== req.params.user)) {
       console.log("Unauthorized access");
       return res.status(403).json({ message: "You can delete only your account" });
     }
     else {
       try {
+        let getuser = await User.findOne({ _id : req.user._id });
+        if(getuser.isAdmin){
+          res.status(501).json({message:"Admin cannot be deleted "})   
+        }
         await User.findByIdAndDelete(req.params.user)
         res.status(200).json({message:"User deleted successfully"})
         
@@ -62,4 +67,21 @@ try {
 }
   }
   
-export { test, updatetheUser ,deleteUser,signOut};
+
+  const getAllUsers = async(req,res,next )=>
+{
+  if(!(req.user.isAdmin)){
+    return next(errorHandle(501,"You cannot view all users"))
+  }
+  else {
+    try {
+      
+      const users = await User.find();
+      res.status(200).json({"users": users});
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+
+export { test, updatetheUser ,deleteUser,signOut,getAllUsers};

@@ -15,3 +15,50 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+
+ .postCon p {
+    font-size: 16px;
+    line-height: 1.6;
+
+    margin-bottom: 20px;
+}
+
+ .postCon h1 {
+    font-size: 32px;
+    margin: 40px 0; 
+ 
+    font-weight: bold;
+}
+
+ .postCon h2 {
+    font-size: 28px;
+    margin: 35px 0; 
+
+    font-weight: bold; /* Add specific font style */
+}
+
+ .postCon h3 {
+    font-size: 24px;
+    margin: 30px 0; 
+   
+    font-weight: normal; /* Add specific font style */
+}
+
+ .postCon h4 {
+    font-size: 20px;
+    margin: 25px 0; /* Increase margin */
+ 
+    font-weight: normal; /* Add specific font style */
+}
+
+ .postCon h5 {
+    font-size: 20px;
+    margin: 20px 0; /* Increase margin */
+
+    font-style: italic; /* Add specific font style */
+}
+.postCon a{
+    color: rgb(0, 0, 246);
+}

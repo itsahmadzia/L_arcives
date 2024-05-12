@@ -1,5 +1,5 @@
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
-import React from "react";
+import {React, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
@@ -13,6 +13,13 @@ import {GoogleAuthProvider, signInWithPopup,getAuth} from "firebase/auth"
 import {app} from "../firebase"
 
 export default function SignIn() {
+  useEffect(()=> {
+    const goToTop = () => {
+      window.scrollTo(0, 0);
+    };
+    goToTop();
+    
+  } ,[])
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = getAuth(app)
