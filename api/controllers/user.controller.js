@@ -84,4 +84,19 @@ try {
   }
 }
 
-export { test, updatetheUser ,deleteUser,signOut,getAllUsers};
+const getUserbyId = async(req,res,next)=>{
+  const {userId} = req.body ; 
+  if(!userId){
+    res.status(501).json("ERROR");
+    return ; 
+  }
+  console.log(userId)
+  try {
+    const user = await User.findById(userId);
+    res.status(200).json({user});
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { test, updatetheUser ,deleteUser,signOut,getAllUsers  , getUserbyId};
