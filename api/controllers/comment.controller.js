@@ -13,7 +13,7 @@ const createComment = async(req,res,next)=> {
 
             const newComment = await Comment.create({ content,userId, postId });
             await newComment.save();
-            res.status(201).json(newComment);
+            res.status(200).json(newComment);
         } catch (error) {
             next(error);
         }
