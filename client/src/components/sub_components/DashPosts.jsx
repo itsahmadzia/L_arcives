@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Table,Modal } from "flowbite-react";
 import { useSelector } from "react-redux";
 import {Link} from 'react-router-dom'
+import Loading from "./Loading";
 
 export default function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
@@ -77,6 +78,14 @@ const handleDeleteButton =  async()=>{
     fetchPosts();
   }, []);
 
+  if(loading){
+    return (
+      <div className="flex items-center justify-center h-screen w-screen">
+        <Loading></Loading>
+      </div>
+    );
+  }
+
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar-thin scrollbar-track-gray-400 scrollbar-thumb-gray-600 dark:scrollbar-track-gray-700 dark:scrollbar-thumb-gray-500">
       {currentUser.isAdmin && posts.length > 0 ? (<>
@@ -99,7 +108,7 @@ const handleDeleteButton =  async()=>{
                 {/* Add image cell */}
                 <Table.Cell>
                   <Link to={`/post/${post.slug}`}>
-                  <img src={post.image} className="w-20 h-16 object-cover bg-gray-100" >
+                  <img loading="lazy" src={post.image} className="w-20 h-16 object-cover bg-gray-100" >
                   </img>
                   </Link>
 
@@ -158,6 +167,7 @@ const handleDeleteButton =  async()=>{
         <Modal.Body>
           <div className="rounded-full w-24 h-24 text-center mx-auto mb-10">
             <img
+            loading="lazy"
               className="rounded-full"
               src="https://i.pinimg.com/736x/16/7f/2d/167f2db72c331c663aa805a99e2f4df0.jpg"
             ></img>

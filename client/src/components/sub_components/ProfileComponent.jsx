@@ -36,6 +36,13 @@ function greeting() {
 }
 
 export default function ProfileComponent() {
+  useEffect(()=> {
+    const goToTop = () => {
+      window.scrollTo(0, 0);
+    };
+    goToTop();
+    
+  } ,[])
   const handleDeleteButton = async () => {
     setshowpopup(false);
     try {
