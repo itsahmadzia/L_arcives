@@ -69,8 +69,8 @@ if(!currentUser)
       const data = await res.json()
       setComments(comments.map((comment)=> {
         if(comment._id === commentId){
-          const audio = new Audio('../../assets/like.mp3');
-          audio.play();
+          // const audio = new Audio('../../assets/like.mp3');
+          // audio.play();
           return {
             ...comment, likes: data.likes,
             countofLikes: data.countofLikes
