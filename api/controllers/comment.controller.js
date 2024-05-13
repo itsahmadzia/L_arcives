@@ -60,5 +60,7 @@ const getPostComments = async(req,res,next)=> {
     }
 
   }
+const editComments = async(req,res,next)=>{
 
-export {createComment, getPostComments,likeComments}
+}
+export {createComment, getPostComments,likeComments,editComments}
