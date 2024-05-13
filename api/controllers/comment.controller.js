@@ -61,6 +61,26 @@ const getPostComments = async(req,res,next)=> {
 
   }
 const editComments = async(req,res,next)=>{
-
+    try {
+        console.log(req.params.commentId)
+        console.log(req);
+        const comment = await Comment.findById(req.params.commentId)
+        if(!comment)
+        {
+            return res.status(404).json({message: "Comment not found"});
+        }
+        if(comment.userId !== req.user.id && req.user.isAdmin===false){
+            return res.status(403).json({message: "You are not authorized to edit this comment"});
+        }
+     const newComment =await Comment.findByIdAndUpdate(
+        req.params.commentId,{
+content: req.body.content
+     },
+    {new:true}
+    )
+        res.status(200).json(newComment)
+    } catch (error) {
+        next(error);
+    }
 }
 export {createComment, getPostComments,likeComments,editComments}
