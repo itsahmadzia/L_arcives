@@ -6,7 +6,7 @@ import { FaThumbsUp } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { CiEdit } from "react-icons/ci";
 
-export default function CommentBox({ com, likeFunction }) {
+export default function CommentBox({ com, likeFunction ,onEdit}) {
   const [editMode, seteditMode] = useState(false);
   const [editwords,seteditwords]=useState(com.content);
   const [user, setUser] = useState({});
@@ -14,6 +14,27 @@ export default function CommentBox({ com, likeFunction }) {
   const handleEdit = () => {
     seteditMode(true);
   };
+  const handleSave = async ()=> {
+    try {
+      const res = await  fetch(`/api/comment/editComment/${com._id}`,
+        {
+          method:"PUT",
+          headers: {
+            "Content-Type":"application/json"
+          },
+          body: JSON.stringify({content:editwords})
+        }
+      )
+      const data = await res.json();
+      if(res.ok){
+      
+        onEdit(com,editwords);
+        seteditMode(false)
+      }
+    } catch (error) {
+      
+    }
+  }
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -34,7 +55,7 @@ export default function CommentBox({ com, likeFunction }) {
     };
     fetchUser();
   }, [com]);
-  console.log(user);
+ // console.log(user);
 
   return (
     <>
@@ -82,7 +103,8 @@ export default function CommentBox({ com, likeFunction }) {
           </button>
       
 <button>
-  <RiDeleteBin5Line className=" text-gray-400 cursor-pointer h-4 hover:text-red-500 hover:scale-125 duration-300 transition-all" />
+ {// <RiDeleteBin5Line className=" text-gray-400 cursor-pointer h-4 hover:text-red-500 hover:scale-125 duration-300 transition-all" />
+ }
 </button>
 
         </div>
@@ -112,7 +134,9 @@ seteditwords(e.target.value)
         
 
 <div className="flex items-end justify-end mt-5 gap-5">
-    <Button outline color={"success"}  value={"Save"}>
+    <Button onClick={
+    handleSave
+    } outline color={"success"}  value={"Save"}>
           Save
           
         </Button>
