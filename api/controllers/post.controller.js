@@ -49,10 +49,10 @@ const getPosts = async (req, res, next) => {
   try {
     const start = parseInt(req.query.start) || 0;
     const limit = parseInt(req.query.limit) || 9;
-    const order = req.query.order === "asc" ? 1 : -1;
+   const order = req.query.sort === "asc" ? 1 : -1; 
 
     const filter = {};
-
+    
     if (req.query.userId) {
       filter.userId = req.query.userId;
     }
