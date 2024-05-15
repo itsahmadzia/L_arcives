@@ -36,6 +36,7 @@ export default function CommentSection({ postId }) {
   const [words, setWords] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   const [comments, setComments] = useState([]);
+  const [recentPosts,setrecentPosts]= useState(null); 
   const getcomments = async () => {
     try {
       const res = await fetch("/api/comment/getpostComments/" + postId);
@@ -83,6 +84,19 @@ if(!currentUser)
   } catch (error) {
     console.log(error)
   }
+  }
+  const handleEdit= async(comment , editedComment)=> {
+    setComments(comments.map((c)=> {
+      if(c._id === comment._id){
+        // const audio = new Audio('../../assets/like.mp3');
+        // audio.play();
+        return {
+          ...c, content:editedComment
+        }
+      }
+      return c;
+    
+    }))
   }
   return (
     <div className="max-w-4xl p-4 mx-auto border-t-2 border-gray-400 mt-48 ">
@@ -158,11 +172,13 @@ if(!currentUser)
        
     </div>
    {comments.map((comment)=> 
-   <CommentBox key={comment._id} com={comment} likeFunction = {likeHandle}></CommentBox>
+   <CommentBox key={comment._id} com={comment} likeFunction = {likeHandle} onEdit={handleEdit}></CommentBox>
    )}
     </>
   
     }
+
+  
     </div>
   );
 }
