@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import { Link } from "react-router-dom";
 import {useSelector} from "react-redux"
@@ -13,13 +13,25 @@ import {
 } from "../../redux/user/userSlice";
 
 export default function Header() {
+  const location = useLocation();
+  const [searchTerm,setSearchTerm]=useState("");
   const dispatch = useDispatch();
 const changeTheme = ()=>{
   dispatch(toggle())
   console.log("here")
 }
+useEffect(() => {
+  const urlParams = new URLSearchParams(location.search);
+  const searchTermFromUrl = urlParams.get('searchTerm');
+  if (searchTermFromUrl) {
+    setSearchTerm(searchTermFromUrl);
+  }
+}, [location.search]);
+
   const {currentUser}= useSelector(state => state.user);
     const path = useLocation().pathname;
+
+
     const logout= async()=> {
       const res = await fetch("/api/user/signout", 
       
