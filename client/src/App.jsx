@@ -14,6 +14,7 @@ import PrivateRoute from "./components/sub_components/PrivateRoute.jsx";
 import CreatePost from "./components/CreatePost.jsx";
 import UpdatePost from "./components/UpdatePost.jsx";
 import PostPage from "./components/PostPage.jsx";
+import Search from "./components/sub_components/Search.jsx";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
       <Routes>
       <Route path="/" element={<Home/>} />
         <Route path="/about" element={<About />}/>
+        <Route path="/search" element={<Search></Search>}/>
     <Route element={<PrivateRoute/>} >
       <Route path="/dashboard" element={<Dashboard />}/>;
         </Route>
