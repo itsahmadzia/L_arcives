@@ -1,13 +1,16 @@
 import { Sidebar } from "flowbite-react";
 import React from "react";
 import {
+  HiArchive,
   HiArrowLeft,
   HiDocument,
+  HiDocumentReport,
   HiDocumentText,
   HiEmojiSad,
   HiUser,
   HiUserCircle,
   HiUserGroup,
+  HiUsers,
 } from "react-icons/hi";
 import { deleteUserSuccess } from "../../redux/user/userSlice";
 
@@ -59,6 +62,7 @@ export default function SideComponent() {
               Profile
             </Sidebar.Item>
           </Link>
+
           {currentUser.isAdmin && (
             <Link to="/dashboard?tab=posts">
               <Sidebar.Item
@@ -72,7 +76,7 @@ export default function SideComponent() {
               </Sidebar.Item>
             </Link>
           )}
-<Link to={"/dashboard?tab=users"}>
+{currentUser.isAdmin && <Link to={"/dashboard?tab=users"}>
 <Sidebar.Item
             className="cursor-pointer"
          
@@ -81,7 +85,27 @@ export default function SideComponent() {
           >
          Users
           </Sidebar.Item>
-</Link>
+</Link>}
+{currentUser.isAdmin && <Link to={"/dashboard?tab=comments"}>
+<Sidebar.Item
+            className="cursor-pointer"
+         
+            icon={HiDocumentReport}
+            as="div"
+          >
+       Comments
+          </Sidebar.Item>
+</Link>}
+{currentUser.isAdmin && <Link to={"/dashboard?tab=dash"}>
+<Sidebar.Item
+            className="cursor-pointer"
+         
+            icon={HiArchive}
+            as="div"
+          >
+      Dashboard
+          </Sidebar.Item>
+</Link>}
           <Sidebar.Item
             className="cursor-pointer"
             onClick={logout}
