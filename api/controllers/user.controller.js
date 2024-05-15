@@ -43,7 +43,7 @@ const updatetheUser = async (req, res) => {
     }
     else {
       try {
-        let getuser = await User.findOne({ _id : req.user._id });
+        let getuser = await User.findOne({ _id : req.params.user });
         if(getuser.isAdmin){
           res.status(501).json({message:"Admin cannot be deleted "})   
         }
@@ -68,21 +68,32 @@ try {
   }
   
 
-  const getAllUsers = async(req,res,next )=>
-{
-  if(!(req.user.isAdmin)){
-    return next(errorHandle(501,"You cannot view all users"))
-  }
-  else {
-    try {
-      
-      const users = await User.find();
-      res.status(200).json({"users": users});
-    } catch (error) {
-      next(error);
+  const getAllUsers = async (req, res, next) => {
+    if (!req.user.isAdmin) {
+        return next(errorHandle(501, "You cannot view all users"));
+    } else {
+        try {
+            const currentDate = new Date();
+            const lastMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+            const users = await User.find();
+            const totalUsers = users.length;
+            
+          
+            const lastMonthUsers = await User.find({
+                createdAt: {
+                    $gte: lastMonthDate, 
+                    $lte: currentDate 
+                }
+            });
+            
+            res.status(200).json({ users: users, totalUsers: totalUsers, lastMonthUsers: lastMonthUsers.length });
+            
+        } catch (error) {
+            next(error);
+        }
     }
-  }
 }
+
 
 const getUserbyId = async(req,res,next)=>{
   const {userId} = req.body ; 
